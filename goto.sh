@@ -1,12 +1,13 @@
+#!/bin/bash
 LIST_DIR=`dirname $0`
 SERVER_LIST_FILE="${LIST_DIR}/.server-list"
 
-function init()
-{
+init() {
+
     echo "Start init method"
     echo $SHELL
-    shname=$(echo $SHELL | awk -F/ '{print $NF}')
-    awk -v file=${SERVER_LIST_FILE} -F' ' '{if($1=="ssh") print ":"$2 > file}' ~/.${shname}_history
+    CURRENT_SH_NAME=$(echo $SHELL | awk -F'/' '{print $NF}')
+    awk -v file=${SERVER_LIST_FILE} -F' ' '{if($1=="ssh") print ":"$2 > file}' ~/.${CURRENT_SH_NAME}_history
     sort ${SERVER_LIST_FILE} | uniq | tee ${SERVER_LIST_FILE}
     echo "End init method"
 }
@@ -30,4 +31,3 @@ case "$1" in
     ssh $svc
     ;;
 esac
-
